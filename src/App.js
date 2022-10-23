@@ -10,7 +10,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
-    <div>
+    <div className="appContainer">
       <Router>
         <Routes>
           <Route path='/' element={<Workout/>}/>
