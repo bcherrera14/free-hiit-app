@@ -8,14 +8,9 @@ body {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-
 }
 
-@media only screen and (min-width: 600px) {
-  .navbar{
-    border-radius: 400px;
-  }
-}
+
 
 .navbar {
 	position: fixed;
@@ -62,3 +57,41 @@ body {
 .navbarListItemNameActive {
 	color: #606060;
 }
+
+.landingImage{
+	border-radius: 40px;
+}
+
+.landingContainer{
+	margin: 0 3rem;
+	text-align: center;
+}
+
+.pageContainer{
+	padding: 1rem;
+	height: 100vh;
+}
+
+.pageHeader{
+	font-size: 40px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.forgotPassword{
+	font-weight: 600;
+	color: #606060;
+	text-align: center;
+	cursor: pointer;
+	text-decoration: none;	
+}
+
+@media only screen and (min-width: 600px) {
+	.navbar{
+	  border-radius: 400px;
+	}
+
+	.pageContainer{
+		padding: 3rem;
+	}
+  }
