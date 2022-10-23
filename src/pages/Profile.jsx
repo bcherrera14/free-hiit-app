@@ -71,7 +71,7 @@ function Profile() {
           }}
           >{changeDetails ? 'Save' : 'Edit'}</p>
         </div>
-        <div className="card">
+        <div className="card shadow-sm">
           <div className="card-body">
             <form>
               <div className="input-group mb-4">

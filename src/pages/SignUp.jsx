@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {getAuth, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth'
 import {setDoc, doc, serverTimestamp} from 'firebase/firestore'
 import {db} from '../firebase.config'
+import OAuth from '../components/OAuth'
 
 
 function SignUp() {
@@ -45,7 +46,7 @@ function SignUp() {
       formDataCopy.timestamp = serverTimestamp()
 
       await setDoc(doc(db, 'users', user.uid), formDataCopy)
-
+      toast.success('Account created.')
       navigate('/explore')
 
     } catch (error) {
@@ -76,7 +77,7 @@ function SignUp() {
         </div>
       </form>
 
-      {/* {Google OAuth} */}
+      <OAuth></OAuth>
 
     </div>
   )
