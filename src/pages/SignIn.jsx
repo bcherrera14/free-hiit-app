@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
 
@@ -36,7 +37,7 @@ function SignIn() {
       }
       
     } catch (error) {
-      console.log(error)
+      toast.error('Wrong user credentials.')
     }
 
 
