@@ -88,7 +88,6 @@ body {
 
 .text-bg-admin{
 	background-color: #C0EC43;
-	/* color: #606060; */
 }
 
 .logoutBtn{
@@ -111,6 +110,15 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+  }
+
+  .spinner-border{
+	width: 3rem;
+	height: 3rem;
+  }
+
+  .text-lime{
+	color: #C0EC43;
   }
   
   .loadingSpinner {
