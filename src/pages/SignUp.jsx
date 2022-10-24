@@ -57,7 +57,7 @@ function SignUp() {
   return (
     <div className='pageContainer'>
       <header>
-        <p className='pageHeader'> Welcome</p>
+        <p className='pageHeader'>Welcome</p>
       </header>
 
       <form onSubmit={onSubmit} className='d-flex flex-column'>

@@ -47,7 +47,7 @@ function SignIn() {
   return (
     <div className='pageContainer'>
       <header>
-        <p className='pageHeader'> Welcome Back!</p>
+        <p className='pageHeader'>Welcome Back!</p>
       </header>
 
       <form onSubmit={onSubmit} className='d-flex flex-column'>

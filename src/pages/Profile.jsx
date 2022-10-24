@@ -58,7 +58,7 @@ function Profile() {
     <div className='pageContainer'>
       <header className='d-flex justify-content-between align-items-center mb-3'>
         <p className='pageHeader m-0'> My Profile</p>
-        <div className="badge text-bg-admin my-auto">Admin</div>
+        <div className="badge text-bg-admin text-dark my-auto">Admin</div>
         <LogoutIcon className='logoutBtn'  width='24px' height='24px' onClick={onLogout} />
       </header>
 
