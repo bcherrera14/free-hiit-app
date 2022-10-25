@@ -53,7 +53,6 @@ function Explore() {
 
       {loading ? <Spinner/> : workouts && workouts.length > 0 ? 
       <div className='d-flex flex-column align-items-center'>
-        <button className='btn btn-lime mb-4'>Create Workout</button>
         <main className='w-100'>
           <ul className='d-flex flex-column p-0'>
             {workouts.map((workout) => (

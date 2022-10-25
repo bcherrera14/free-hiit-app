@@ -44,10 +44,12 @@ function SignUp() {
       const formDataCopy = {...formData}
       delete formDataCopy.password
       formDataCopy.timestamp = serverTimestamp()
+      formDataCopy.completedWorkouts = []
+      formDataCopy.isAdmin = false
 
       await setDoc(doc(db, 'users', user.uid), formDataCopy)
       toast.success('Account created.')
-      navigate('/explore')
+      navigate('/workout')
 
     } catch (error) {
       toast.error('Account not created.')

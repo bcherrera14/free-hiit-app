@@ -1,54 +1,87 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import {collection, getDocs, query, where, orderBy, limit, startAfter} from 'firebase/firestore'
+import {doc, getDoc, updateDoc} from 'firebase/firestore'
+import { getAuth } from 'firebase/auth';
 import {db} from '../firebase.config'
 import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
 
 function Workout() {
   const [loading, setLoading] = useState(true)
+  const [workoutId, setWorkoutId] = useState(null)
   const [workout, setWorkout] = useState(null)
-  const [workoutComplete, setWorkoutComplete] = useState(false)
+  const [completedWorkouts, setCompletedWorkouts] = useState([])
+  const [workoutComplete, setWorkoutComplete] = useState(null)
+
   const d = new Date()
   const queryDate = d.toLocaleDateString("en-US");
   const options = { weekday: 'long', month: 'long', day: 'numeric' };
   const date = d.toLocaleDateString("en-US", options)
+  const auth = getAuth()
 
   useEffect(() => {
+
     const fetchWorkout = async () => {
-      try {
-        //Get Reference
-        const workoutsRef = collection(db, 'workouts')
-
-        //Create a query
-        const q = query(workoutsRef, where('date', '==', queryDate))
-
-        //Execute query
-        const querySnap = await getDocs(q)
-        // console.log(querySnap.data())
-        let todaysWorkout = []
-
-        querySnap.forEach((doc) => {
-          todaysWorkout.push({
-            id: doc.id,
-            data: doc.data()
-          })
-        })
-        console.log(todaysWorkout)
-
-        todaysWorkout.length ? setWorkout(todaysWorkout) : setWorkout(null)
-
-        setLoading(false)
-      } catch (error) {
-        toast.error('Could not fetch workouts.')
-      }
+      const workoutRef = collection(db, 'workouts')
+      const q = query(workoutRef, where('date', '==', queryDate))
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        if(doc.id){
+          setWorkoutId(doc.id)
+          setWorkout(doc.data())
+          // console.log(doc.id, " => ", doc.data());
+        }
+        
+      });
+      setLoading(false)
     }
 
-    fetchWorkout()
+    const getCompletedWorkouts = async () => {
+      // const auth = getAuth()
+      const userRef = doc(db, 'users', auth.currentUser.uid)
+      const docSnap = await getDoc(userRef)
+      if (docSnap.exists()) {
+        const completedWorkouts = docSnap.data().completedWorkouts
+        setCompletedWorkouts(completedWorkouts)
+        setWorkoutComplete(completedWorkouts.includes(workoutId))
+      }
+        
+    }
 
-  }, [queryDate])
+    if(!workoutId){
+      fetchWorkout()
+    }else{
+      getCompletedWorkouts()
+    }
 
-  const onClick = () => {
+  }, [workoutId])
+
+
+const updateCompletedWorkoutList = async (updatedList) => {
+  // Update database
+    try {
+        const userRef = doc(db, 'users', auth.currentUser.uid)
+        await updateDoc(userRef, {
+          completedWorkouts: [...updatedList]
+        })
+    } catch (error) {
+      toast.error('Could not update profile details.')
+    }
+}
+  
+
+  const onClick = async () => {
+    if(workoutComplete){
+      //Remove workout id
+      const updatedWorkoutList = completedWorkouts.filter((id) => workoutId !== id)
+      setCompletedWorkouts(updatedWorkoutList)
+      updateCompletedWorkoutList(updatedWorkoutList)
+    }else{
+      //Add workout id
+      setCompletedWorkouts([...completedWorkouts, workoutId])
+      updateCompletedWorkoutList([...completedWorkouts, workoutId])
+    }
     setWorkoutComplete(!workoutComplete)
   }
 

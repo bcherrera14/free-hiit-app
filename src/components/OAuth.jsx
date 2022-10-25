@@ -24,7 +24,9 @@ function OAuth() {
                 await setDoc(doc(db, 'users', user.uid), {
                     name: user.displayName,
                     email: user.email,
-                    timestamp: serverTimestamp()
+                    timestamp: serverTimestamp(),
+                    completedWorkouts: [],
+                    isAdmin: false
                 })
             }
 
