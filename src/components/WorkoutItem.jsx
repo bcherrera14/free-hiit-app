@@ -8,28 +8,10 @@ import checkIcon from '../assets/circle-check-solid.svg'
 
 
 
-function WorkoutItem({workout, id}) {
-    const [isCompleted, setIsCompleted] = useState(false)
-
+function WorkoutItem({workout, id, isCompleted}) {
     const d = new Date(workout.date)
     const options = { weekday: 'long', month: 'long', day: 'numeric' };
     const date = d.toLocaleDateString("en-US", options)
-
-    useEffect(() => {
-      const auth = getAuth()
-      const getCompletedWorkouts = async () => {
-        
-          const userRef = doc(db, 'users', auth.currentUser.uid)
-          const docSnap = await getDoc(userRef)
-          if (docSnap.exists()) {
-            const completedWorkouts = docSnap.data().completedWorkouts
-            setIsCompleted(completedWorkouts.includes(id))
-          }
-          
-      }
-      getCompletedWorkouts()
-      
-    }, [id])
 
   return (
     <li className='workout-card card mb-3 shadow-sm'>

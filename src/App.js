@@ -1,4 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
+import {getAuth} from 'firebase/auth'
+import { useAuthStatus } from './hooks/useAuthStatus'
+import {doc, getDoc} from 'firebase/firestore'
+import {db} from './firebase.config'
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar";
@@ -15,28 +20,54 @@ import NewWorkout from "./pages/NewWorkout";
 
 
 function App() {
+  const auth = getAuth()
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [completedWorkouts, setCompletedWorkouts] = useState([])
+  const {loggedIn} = useAuthStatus()
+
+  useEffect(() => {
+    if(loggedIn){
+      const getUserDetails = async () => {
+        
+        const userRef = doc(db, 'users', auth.currentUser.uid)
+        const docSnap = await getDoc(userRef)
+        if (docSnap.exists()) {
+          setCompletedWorkouts(docSnap.data().completedWorkouts)
+          setIsAdmin(docSnap.data().isAdmin)
+          console.log('IsAdmin: ', docSnap.data().isAdmin)
+          console.log('completed workouts: ', docSnap.data().completedWorkouts)
+        } 
+      }
+      getUserDetails()
+    }
+    console.log('app useEffect ran')
+  }, [loggedIn])
+  
+
   return (
     <div className="appContainer">
       <Router>
         <Routes>
           <Route path='/' element={<Landing/>}/>
+          <Route path='/sign-in' element={<SignIn/>}/>
+          <Route path='/sign-up' element={<SignUp/>}/>
+          <Route path='/forgot-password' element={<ForgotPassword/>}/>
+
+          {/* Private Routes */}
           <Route path='/workout' element={<PrivateRoute/>}>
-            <Route path="/workout" element={<Workout/>}/>
+            <Route path="/workout" element={<Workout completedWorkouts={completedWorkouts} setCompletedWorkouts={setCompletedWorkouts}/>}/>
           </Route>
           <Route path='/explore' element={<PrivateRoute/>}>
-            <Route path='/explore' element={<Explore/>}/>
+            <Route path='/explore' element={<Explore completedWorkouts={completedWorkouts}/>}/>
           </Route>
           <Route path='/profile' element={<PrivateRoute/>}>
-            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/profile" element={<Profile isAdmin={isAdmin}/>}/>
           </Route>
           <Route path='/new-workout' element={<PrivateRoute/>}>
             <Route path="/new-workout" element={<NewWorkout/>}/>
           </Route>
-          <Route path='/sign-in' element={<SignIn/>}/>
-          <Route path='/sign-up' element={<SignUp/>}/>
-          <Route path='/forgot-password' element={<ForgotPassword/>}/>
         </Routes>
-        <Navbar/>
+        {loggedIn && <Navbar admin={isAdmin}/>}
       </Router>
       <ToastContainer/>
     </div>

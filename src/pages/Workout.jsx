@@ -8,11 +8,10 @@ import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
 import WorkoutCard from '../components/WorkoutCard';
 
-function Workout() {
+function Workout({completedWorkouts, setCompletedWorkouts}) {
   const [loading, setLoading] = useState(true)
   const [workoutId, setWorkoutId] = useState(null)
   const [workout, setWorkout] = useState(null)
-  const [completedWorkouts, setCompletedWorkouts] = useState([])
   const [workoutComplete, setWorkoutComplete] = useState(null)
 
   const d = new Date()
@@ -38,22 +37,9 @@ function Workout() {
       setLoading(false)
     }
 
-    const getCompletedWorkouts = async () => {
-      // const auth = getAuth()
-      const userRef = doc(db, 'users', auth.currentUser.uid)
-      const docSnap = await getDoc(userRef)
-      if (docSnap.exists()) {
-        const completedWorkouts = docSnap.data().completedWorkouts
-        setCompletedWorkouts(completedWorkouts)
-        setWorkoutComplete(completedWorkouts.includes(workoutId))
-      }
-        
-    }
-
     if(!workoutId){
       fetchWorkout()
     }else{
-      getCompletedWorkouts()
     }
 
   }, [workoutId])
@@ -73,7 +59,7 @@ const updateCompletedWorkoutList = async (updatedList) => {
   
 
   const onClick = async () => {
-    if(workoutComplete){
+    if(completedWorkouts.includes(workoutId)){
       //Remove workout id
       const updatedWorkoutList = completedWorkouts.filter((id) => workoutId !== id)
       setCompletedWorkouts(updatedWorkoutList)
@@ -99,7 +85,7 @@ const updateCompletedWorkoutList = async (updatedList) => {
           workout ? 
           <div>
             <WorkoutCard workout={workout}/>
-            <button type="button" onClick={onClick} className={`btn ${workoutComplete ? 'btn-lime' : 'btn-secondary'} w-100 mt-4`} >{!workoutComplete && 'Not' } Done</button>
+            <button type="button" onClick={onClick} className={`btn ${completedWorkouts.includes(workoutId) ? 'btn-lime' : 'btn-secondary'} w-100 mt-4`} >{!completedWorkouts.includes(workoutId) && 'Not' } Done</button>
           </div> :
           <div className="workout-card card shadow-sm mb-4">
             <div className="workout-body card-body">No workout for today.</div>

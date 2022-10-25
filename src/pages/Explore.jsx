@@ -8,7 +8,7 @@ import Spinner from '../components/Spinner'
 import WorkoutItem from '../components/WorkoutItem'
 
 
-function Explore() {
+function Explore({completedWorkouts}) {
   const [workouts, setWorkouts] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -56,7 +56,7 @@ function Explore() {
         <main className='w-100'>
           <ul className='d-flex flex-column p-0'>
             {workouts.map((workout) => (
-              <WorkoutItem workout={workout.data} id={workout.id} key={workout.id}/>
+              <WorkoutItem workout={workout.data} id={workout.id} key={workout.id} isCompleted={completedWorkouts.includes(workout.id)}/>
             ))}
           </ul>
         </main>
