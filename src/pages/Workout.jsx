@@ -6,6 +6,7 @@ import { getAuth } from 'firebase/auth';
 import {db} from '../firebase.config'
 import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
+import WorkoutCard from '../components/WorkoutCard';
 
 function Workout() {
   const [loading, setLoading] = useState(true)
@@ -97,23 +98,13 @@ const updateCompletedWorkoutList = async (updatedList) => {
         {loading ? <Spinner/> : 
           workout ? 
           <div>
-          <div className="workout-card card shadow-sm">
-          <div className=" card-body">
-            <p className="fw-bold">Part 1</p>
-            <p>Run 2 miles</p>
-            <p className="fw-bold">Part 2</p>
-            <p>3 rounds</p>
-            <p>15 wall balls</p>
-            <p>800m bike</p>
-            <p>15 box jumps</p>
+            <WorkoutCard workout={workout}/>
+            <button type="button" onClick={onClick} className={`btn ${workoutComplete ? 'btn-lime' : 'btn-secondary'} w-100 mt-4`} >{!workoutComplete && 'Not' } Done</button>
+          </div> :
+          <div className="workout-card card shadow-sm mb-4">
+            <div className="workout-body card-body">No workout for today.</div>
           </div>
-        </div>
-        <button type="button" onClick={onClick} className={`btn ${workoutComplete ? 'btn-lime' : 'btn-secondary'} w-100 mt-4`} >{!workoutComplete && 'Not' } Done</button>
-      </div> :
-      <div className="workout-card card shadow-sm mb-4">
-        <div className="workout-body card-body">No workout for today.</div>
-      </div>
-      }
+        }
       </main>
     </div>
   )
