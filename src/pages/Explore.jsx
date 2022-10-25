@@ -1,12 +1,10 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { Form } from 'react-router-dom'
-import {collection, getDocs, query, where, orderBy, limit, startAfter} from 'firebase/firestore'
+import {collection, getDocs, query, orderBy, limit} from 'firebase/firestore'
 import {db} from '../firebase.config'
 import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
 import WorkoutItem from '../components/WorkoutItem'
-import WorkoutCard from '../components/WorkoutCard'
 
 
 function Explore({completedWorkouts}) {

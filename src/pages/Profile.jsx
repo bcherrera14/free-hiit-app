@@ -9,7 +9,7 @@ import {toast} from 'react-toastify'
 
 
 
-function Profile({isAdmin}) {
+function Profile({isAdmin, completedWorkouts}) {
   const auth = getAuth()
   const [changeDetails, setChangeDetails] = useState(false)
   const [formData, setFormData] = useState({
@@ -74,11 +74,17 @@ function Profile({isAdmin}) {
         <div className="card shadow-sm">
           <div className="card-body">
             <form>
-              <div className="input-group mb-4">
+              <div className="mb-4">
+                <label className="form-label">Profile Name</label>
                 <input type="text" id="name" className={!changeDetails ? 'form-control profileName' : 'form-control profileNameActive' } disabled={!changeDetails} value={name} onChange={onChange}/>
               </div>
-              <div className="input-group">
+              <div className="mb-4">
+                <label className="form-label">Email</label>
                 <input type="text" id="email" className='form-control' disabled value={email} onChange={onChange}/>
+              </div>
+              <div className='d-flex justify-content-between'>
+                <p className='m-0 fw-bold'>Completed Workouts</p>
+                <div className="badge text-bg-admin text-dark my-auto">{completedWorkouts.length}</div>
               </div>
             </form>
           </div>

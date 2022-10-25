@@ -69,7 +69,7 @@ function App() {
             <Route path='/explore' element={<Explore completedWorkouts={completedWorkouts}/>}/>
           </Route>
           <Route path='/profile' element={<PrivateRoute/>}>
-            <Route path="/profile" element={<Profile isAdmin={isAdmin}/>}/>
+            <Route path="/profile" element={<Profile completedWorkouts={completedWorkouts} isAdmin={isAdmin}/>}/>
           </Route>
           <Route path='/new-workout' element={<PrivateRoute/>}>
             <Route path="/new-workout" element={<NewWorkout/>}/>
