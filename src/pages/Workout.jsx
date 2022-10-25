@@ -30,7 +30,7 @@ function Workout({completedWorkouts, setCompletedWorkouts}) {
         if(doc.id){
           setWorkoutId(doc.id)
           setWorkout(doc.data())
-          // console.log(doc.id, " => ", doc.data());
+          console.log(doc.id, " => ", doc.data());
         }
         
       });

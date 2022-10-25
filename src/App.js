@@ -23,7 +23,11 @@ function App() {
   const auth = getAuth()
   const [isAdmin, setIsAdmin] = useState(false)
   const [completedWorkouts, setCompletedWorkouts] = useState([])
+  // const [date, setDate] = useState('')
   const {loggedIn} = useAuthStatus()
+
+  
+
 
   useEffect(() => {
     if(loggedIn){
@@ -39,6 +43,10 @@ function App() {
         } 
       }
       getUserDetails()
+
+      // const d = new Date()
+      // const options = { weekday: 'long', month: 'long', day: 'numeric' };
+      // setDate(d.toLocaleDateString("en-US", options))
     }
     console.log('app useEffect ran')
   }, [loggedIn])

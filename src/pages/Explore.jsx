@@ -6,11 +6,14 @@ import {db} from '../firebase.config'
 import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
 import WorkoutItem from '../components/WorkoutItem'
+import WorkoutCard from '../components/WorkoutCard'
 
 
 function Explore({completedWorkouts}) {
   const [workouts, setWorkouts] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [parts, setParts] = useState([])
+
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -35,6 +38,7 @@ function Explore({completedWorkouts}) {
 
         setWorkouts(workouts)
         setLoading(false)
+        console.log('fetch workoutlist')
       } catch (error) {
         toast.error('Could not fetch workouts.')
       }
@@ -42,7 +46,30 @@ function Explore({completedWorkouts}) {
 
     fetchWorkouts()
 
+    // Set Offcanvas Data
+    var workoutQuickView = document.getElementById('workoutQuickView')
+    workoutQuickView.addEventListener('show.bs.offcanvas', function (event) {
+      // Button that triggered the modal
+      var button = event.relatedTarget
+      // Extract info from data-bs-* attributes
+      var workout = JSON.parse(button.getAttribute('data-bs-workout')) 
+      // Format workout data
+      const part = []
+
+      for(let i = 0; i < workout.parts; i++){
+          // console.log('part', i)
+          let key = 'part' + (i+1).toString()
+          part.push('Part ' + (i+1).toString())
+          part.push(workout[key])
+      }
+      setParts(part)
+      var date = workoutQuickView.querySelector('.workout-title')
+      date.textContent = workout.date
+    })
+
   }, [])
+
+  
 
 
   return (
@@ -61,6 +88,26 @@ function Explore({completedWorkouts}) {
           </ul>
         </main>
       </div> : <p>No Workouts Available</p>}
+      {/* OffCanvas */}
+      <div className="offcanvas offcanvas-end" tabIndex="-1" id="workoutQuickView" aria-labelledby="offcanvasExampleLabel">
+        <div className="offcanvas-header">
+          <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div className="offcanvas-body">
+          <div className="workout-card card shadow-sm mb-4">
+            <div className="workout-title card-body">Date</div>
+          </div>
+          <div className="workout-card card shadow-sm">
+            <div className=" card-body">
+                {
+                  parts.map((item, index) => (item.includes(',') ? (item.split(',').map((item, index)=><p key={index}>{item}</p>)) : <p key={index} className={(item.includes('Part')) ? 'fw-bold' : ''}>{item}</p>))
+                }
+            </div>
+        </div>
+        </div>
+      </div>
+      {/* OffCanvas */}
+
     </div>
   )
 }
