@@ -1,13 +1,13 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import {collection, getDocs, query, orderBy, limit} from 'firebase/firestore'
+import {collection, getDocs, query, orderBy, limit, startAt} from 'firebase/firestore'
 import {db} from '../firebase.config'
 import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
 import WorkoutItem from '../components/WorkoutItem'
 
 
-function Explore({completedWorkouts}) {
+function Explore({completedWorkouts, isAdmin}) {
   const [workouts, setWorkouts] = useState(null)
   const [loading, setLoading] = useState(true)
   const [parts, setParts] = useState([])
@@ -20,7 +20,9 @@ function Explore({completedWorkouts}) {
         const workoutsRef = collection(db, 'workouts')
 
         //Create a query
-        const q = query(workoutsRef, orderBy('date', 'desc'), limit(7))
+        const d = new Date()
+        const queryDate = d.toLocaleDateString("en-US");
+        const q = isAdmin ? query(workoutsRef, orderBy('date', 'desc'), limit(7)) : query(workoutsRef, orderBy('date', 'desc'), startAt(queryDate), limit(7))
 
         //Execute query
         const querySnap = await getDocs(q)

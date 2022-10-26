@@ -64,7 +64,7 @@ function App() {
             <Route path="/workout" element={<Workout completedWorkouts={completedWorkouts} setCompletedWorkouts={setCompletedWorkouts} isAdmin={isAdmin}/>}/>
           </Route>
           <Route path='/explore' element={<PrivateRoute/>}>
-            <Route path='/explore' element={<Explore completedWorkouts={completedWorkouts}/>}/>
+            <Route path='/explore' element={<Explore completedWorkouts={completedWorkouts} isAdmin={isAdmin}/>}/>
           </Route>
           <Route path='/profile' element={<PrivateRoute/>}>
             <Route path="/profile" element={<Profile completedWorkouts={completedWorkouts} isAdmin={isAdmin}/>}/>
