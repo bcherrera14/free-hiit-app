@@ -17,6 +17,8 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import NewWorkout from "./pages/NewWorkout";
+import EditWorkout from "./pages/EditWorkout";
+
 
 
 function App() {
@@ -38,17 +40,13 @@ function App() {
         if (docSnap.exists()) {
           setCompletedWorkouts(docSnap.data().completedWorkouts)
           setIsAdmin(docSnap.data().isAdmin)
-          console.log('IsAdmin: ', docSnap.data().isAdmin)
-          console.log('completed workouts: ', docSnap.data().completedWorkouts)
+          // console.log('IsAdmin: ', docSnap.data().isAdmin)
+          // console.log('completed workouts: ', docSnap.data().completedWorkouts)
         } 
       }
       getUserDetails()
-
-      // const d = new Date()
-      // const options = { weekday: 'long', month: 'long', day: 'numeric' };
-      // setDate(d.toLocaleDateString("en-US", options))
     }
-    console.log('app useEffect ran')
+    // console.log('app useEffect ran')
   }, [loggedIn])
   
 
@@ -63,7 +61,7 @@ function App() {
 
           {/* Private Routes */}
           <Route path='/workout' element={<PrivateRoute/>}>
-            <Route path="/workout" element={<Workout completedWorkouts={completedWorkouts} setCompletedWorkouts={setCompletedWorkouts}/>}/>
+            <Route path="/workout" element={<Workout completedWorkouts={completedWorkouts} setCompletedWorkouts={setCompletedWorkouts} isAdmin={isAdmin}/>}/>
           </Route>
           <Route path='/explore' element={<PrivateRoute/>}>
             <Route path='/explore' element={<Explore completedWorkouts={completedWorkouts}/>}/>
@@ -73,6 +71,9 @@ function App() {
           </Route>
           <Route path='/new-workout' element={<PrivateRoute/>}>
             <Route path="/new-workout" element={<NewWorkout/>}/>
+          </Route>
+          <Route path='/workout/:workout' element={<PrivateRoute/>}>
+            <Route path="/workout/:workout" element={<EditWorkout/>}/>
           </Route>
         </Routes>
         {loggedIn && <Navbar admin={isAdmin}/>}

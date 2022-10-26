@@ -8,7 +8,8 @@ import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
 import WorkoutCard from '../components/WorkoutCard';
 
-function Workout({completedWorkouts, setCompletedWorkouts}) {
+
+function Workout({completedWorkouts, setCompletedWorkouts, isAdmin}) {
   const [loading, setLoading] = useState(true)
   const [workoutId, setWorkoutId] = useState(null)
   const [workout, setWorkout] = useState(null)
@@ -30,7 +31,7 @@ function Workout({completedWorkouts, setCompletedWorkouts}) {
         if(doc.id){
           setWorkoutId(doc.id)
           setWorkout(doc.data())
-          console.log(doc.id, " => ", doc.data());
+          // console.log(doc.id, " => ", doc.data());
         }
         
       });
@@ -43,6 +44,8 @@ function Workout({completedWorkouts, setCompletedWorkouts}) {
     }
 
   }, [workoutId])
+
+  
 
 
 const updateCompletedWorkoutList = async (updatedList) => {
@@ -72,6 +75,7 @@ const updateCompletedWorkoutList = async (updatedList) => {
     setWorkoutComplete(!workoutComplete)
   }
 
+
   return (
     <div className='pageContainer'>
       <header>
@@ -84,7 +88,7 @@ const updateCompletedWorkoutList = async (updatedList) => {
         {loading ? <Spinner/> : 
           workout ? 
           <div>
-            <WorkoutCard workout={workout}/>
+            <WorkoutCard workoutId={workoutId} workout={workout} isAdmin={isAdmin}/>
             <button type="button" onClick={onClick} className={`btn ${completedWorkouts.includes(workoutId) ? 'btn-lime' : 'btn-secondary'} w-100 mt-4`} >{!completedWorkouts.includes(workoutId) && 'Not' } Done</button>
           </div> :
           <div className="workout-card card shadow-sm mb-4">

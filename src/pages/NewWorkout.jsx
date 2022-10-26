@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {setDoc, doc, serverTimestamp, addDoc, collection} from 'firebase/firestore'
 import {db} from '../firebase.config'
 import { ReactComponent as AddIcon } from '../assets/circle-plus-solid.svg'
@@ -69,7 +70,6 @@ function NewWorkout() {
       
     } catch (error) {
       toast.error('Could not create new workout.')
-      console.log(error)
     }
 
     

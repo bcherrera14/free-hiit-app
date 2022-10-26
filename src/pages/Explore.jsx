@@ -36,7 +36,6 @@ function Explore({completedWorkouts}) {
 
         setWorkouts(workouts)
         setLoading(false)
-        console.log('fetch workoutlist')
       } catch (error) {
         toast.error('Could not fetch workouts.')
       }
@@ -55,7 +54,6 @@ function Explore({completedWorkouts}) {
       const part = []
 
       for(let i = 0; i < workout.parts; i++){
-          // console.log('part', i)
           let key = 'part' + (i+1).toString()
           part.push('Part ' + (i+1).toString())
           part.push(workout[key])

@@ -13,7 +13,7 @@ function Navbar({admin}) {
     const location = useLocation()
 
     const pathMatchRoute = (route) => {
-        if (route === location.pathname){
+        if (route === location.pathname || location.pathname.includes(route)){
             return true
         }
      }
@@ -32,7 +32,7 @@ function Navbar({admin}) {
                 </li>
                 {admin && <li className="navbarListItem" onClick={()=> navigate('/new-workout')}>
                     <AddIcon fill={pathMatchRoute('/new-workout') ? '#606060' : '#D9D9D9'} width='30px' height='30px' />
-                    <p className={pathMatchRoute('/new-workout') ? 'navbarListItemNameActive' : 'navbarListItemName'}>New</p>
+                    <p className={pathMatchRoute('/new-workout') ? 'navbarListItemNameActive' : 'navbarListItemName'}>Create</p>
                 </li>}
                 <li className="navbarListItem" onClick={()=> navigate('/profile')}>
                     <ProfileIcon fill={pathMatchRoute('/profile') ? '#606060' : '#D9D9D9'} width='30px' height='30px' />
